@@ -26,16 +26,16 @@
  void freeList(VmSystem * system)
  {
    Node * prev;
-   Node * cur;
+   Node * curr;
 
-   cur = system->itemList->head;
+   curr = system->itemList->head;
 
-   while(cur != NULL)
+   while(curr != NULL)
    {
-     prev = cur;
-     cur = cur->next;
-     free(prev->data);
-     free(prev);
+     prev = curr;
+     curr = curr->next;
+     freeStock(prev->data);
+     freeNode(prev);
    }
 
    free(system->itemList);
@@ -114,4 +114,9 @@ Stock * createStock(char * stockString)
 
   return newStock;
 
+}
+
+void freeStock(Stock * stock)
+{
+  free(stock);
 }

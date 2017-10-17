@@ -24,7 +24,7 @@ Boolean systemInit(VmSystem * system)
  **/
 void systemFree(VmSystem * system)
 {
-  free(system);
+  freeList(system);
 }
 
 /**
@@ -109,8 +109,24 @@ Boolean saveCoins(VmSystem * system)
  **/
 void displayItems(VmSystem * system)
 {
+  Node * curr;
+  Stock * data;
+  int i;
 
+  printf("\nItem Menu\n\n");
+  printf("%-6s| %-40s| %-10s| %-7s\n", "ID", "Name", "Available", "Price");
+  for(i = 0; i < MAX_WIDTH; i++)
+    printf("-");
+  printf("\n");
 
+  curr = system->itemList->head;
+  while(curr != NULL)
+  {
+    data = curr->data;
+    printf("%-6s| %-40s| %-10u| $%3u.%02u\n",
+            data->id, data->name, data->onHand, 1, 1);
+    curr = curr->next;
+  }
 
 }
 

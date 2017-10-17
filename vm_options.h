@@ -3,6 +3,8 @@
 
 #include "vm_stock.h"
 
+#define MAX_WIDTH 70
+
 Boolean systemInit(VmSystem * system);
 void systemFree(VmSystem * system);
 Boolean loadData(

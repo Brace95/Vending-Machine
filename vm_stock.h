@@ -20,5 +20,6 @@ void insertNode(List * list, Node * new);
 void removeNode(List * list, int index);
 
 Stock * createStock(char * stockString);
+void freeStock(Stock * stock);
 
 #endif
