@@ -11,7 +11,11 @@
  * that will be called.
  **/
 void initMenu(MenuItem * menu)
-{ }
+{
+
+
+
+}
 
 /**
  * Gets input from the user and returns a pointer to the MenuFunction

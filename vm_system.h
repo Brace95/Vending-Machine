@@ -18,10 +18,18 @@
  **/
 #define DESC_LEN 255
 
+#define PRICE_LEN 5
+
+#define QUA_LEN 2
+
+#define SEP_COUNT 4
+
 /**
  * The number of denominations of currency available in the system.
  **/
 #define NUM_DENOMS 8
+
+#define MAX_LEN ID_LEN+NAME_LEN+DESC_LEN+PRICE_LEN+QUA_LEN+SEP_COUNT
 
 /**
  * A structure to represent a price. One of the problems with the floating

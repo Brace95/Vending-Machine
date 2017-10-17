@@ -3,4 +3,6 @@
 
 #include "vm_menu.h"
 
+#define INPUT_LEN 1
+
 #endif

@@ -13,7 +13,8 @@
  **/
 Boolean systemInit(VmSystem * system)
 {
-    return FALSE;
+    system->itemList = NULL;
+    return TRUE;
 }
 
 /**
@@ -22,7 +23,9 @@ Boolean systemInit(VmSystem * system)
  * and run it through valgrind.
  **/
 void systemFree(VmSystem * system)
-{ }
+{
+  free(system);
+}
 
 /**
  * Loads the stock and coin data into the system. You will also need to assign
@@ -33,7 +36,13 @@ void systemFree(VmSystem * system)
 Boolean loadData(
     VmSystem * system, const char * stockFileName, const char * coinsFileName)
 {
+  /* Load stock and coins */
+  if(!loadStock(system, stockFileName))
     return FALSE;
+  if(!loadCoins(system, coinsFileName))
+    return FALSE;
+
+  return TRUE;
 }
 
 /**
@@ -41,6 +50,22 @@ Boolean loadData(
  **/
 Boolean loadStock(VmSystem * system, const char * fileName)
 {
+    FILE * fp;
+    char buff[MAX_LEN];
+
+    system->stockFileName = fileName;
+
+    /* Open file */
+    fp = fopen(fileName, "r");
+
+    while(fgets(buff, MAX_LEN, fp))
+    {
+
+      /* validation */
+      
+      printf("%s\n", chomp(buff));
+    }
+
     return FALSE;
 }
 
@@ -49,6 +74,7 @@ Boolean loadStock(VmSystem * system, const char * fileName)
  **/
 Boolean loadCoins(VmSystem * system, const char * fileName)
 {
+    system->coinFileName = fileName;
     return FALSE;
 }
 
