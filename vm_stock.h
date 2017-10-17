@@ -11,4 +11,14 @@
 
 #define STOCK_DELIM "|"
 
+Boolean createList(VmSystem * system);
+void freeList(VmSystem * system);
+
+Node * createNode(Stock * data);
+void freeNode(Node * node);
+void insertNode(List * list, Node * new);
+void removeNode(List * list, int index);
+
+Stock * createStock(char * stockString);
+
 #endif

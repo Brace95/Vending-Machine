@@ -13,7 +13,7 @@
  **/
 Boolean systemInit(VmSystem * system)
 {
-    system->itemList = NULL;
+    createList(system);
     return TRUE;
 }
 
@@ -51,6 +51,8 @@ Boolean loadData(
 Boolean loadStock(VmSystem * system, const char * fileName)
 {
     FILE * fp;
+    Node * newNode;
+    Stock * newStock;
     char buff[MAX_LEN];
 
     system->stockFileName = fileName;
@@ -60,11 +62,15 @@ Boolean loadStock(VmSystem * system, const char * fileName)
 
     while(fgets(buff, MAX_LEN, fp))
     {
+      /* Remove extra chars */
+      buff[strlen(buff)-1] = '\0';
 
-      /* validation */
-      
-      printf("%s\n", chomp(buff));
+      newStock = createStock(buff);
+      newNode = createNode(newStock);
+      insertNode(system->itemList, newNode);
+
     }
+    printf("%s\n", system->itemList->head->next->next->data->id);
 
     return FALSE;
 }
