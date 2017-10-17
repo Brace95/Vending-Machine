@@ -36,9 +36,11 @@ void systemFree(VmSystem * system)
 Boolean loadData(
     VmSystem * system, const char * stockFileName, const char * coinsFileName)
 {
-  /* Load stock and coins */
+  printf("\t Loading Stock...\n");
   if(!loadStock(system, stockFileName))
     return FALSE;
+
+  printf("\t Loading Coins...\n");
   if(!loadCoins(system, coinsFileName))
     return FALSE;
 
@@ -65,14 +67,15 @@ Boolean loadStock(VmSystem * system, const char * fileName)
       /* Remove extra chars */
       buff[strlen(buff)-1] = '\0';
 
+      if(!checkLineStock(buff))
+        return FALSE;
+
       newStock = createStock(buff);
       newNode = createNode(newStock);
       insertNode(system->itemList, newNode);
 
     }
-    printf("%s\n", system->itemList->head->next->next->data->id);
-
-    return FALSE;
+    return TRUE;
 }
 
 /**
@@ -81,7 +84,7 @@ Boolean loadStock(VmSystem * system, const char * fileName)
 Boolean loadCoins(VmSystem * system, const char * fileName)
 {
     system->coinFileName = fileName;
-    return FALSE;
+    return TRUE;
 }
 
 /**
@@ -105,7 +108,11 @@ Boolean saveCoins(VmSystem * system)
  * This is the data loaded into the linked list in the requirement 2.
  **/
 void displayItems(VmSystem * system)
-{ }
+{
+
+
+
+}
 
 /**
  * This option allows the user to purchase an item.

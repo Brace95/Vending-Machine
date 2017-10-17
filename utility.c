@@ -15,3 +15,8 @@ void readRestOfLine()
     /* Reset the error status of the stream. */
     clearerr(stdin);
 }
+
+Boolean checkLineStock(char * line)
+{
+  return TRUE;
+}

@@ -30,4 +30,6 @@ typedef enum boolean
  **/
 void readRestOfLine();
 
+Boolean checkLineStock(char * line);
+
 #endif

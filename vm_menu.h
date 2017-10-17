@@ -10,6 +10,12 @@
 
 #define MENU_SIZE 9
 
+#define MAIN_LEN 3
+
+#define ADMIN_START 3
+
+#define OPT_LEN 1
+
 /**
  * Represents a function that can be selected from the list of
  * menu_functions - creates a new type called a menu_function.
@@ -27,5 +33,6 @@ typedef struct menu_item
 
 void initMenu(MenuItem * menu);
 MenuFunction getMenuChoice(MenuItem * menu);
+void displayMenu(MenuItem * menu);
 
 #endif
