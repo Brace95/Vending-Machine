@@ -107,10 +107,11 @@ Stock * createStock(char * stockString)
   /* Desc */
   strcpy(newStock->desc, strtok(NULL, STOCK_DELIM));
   /* Price */
-  /* LATER!!! */
   price = strtok(NULL, STOCK_DELIM);
   /* On hand */
   newStock->onHand = atoi(strtok(NULL, STOCK_DELIM));
+
+  newStock->price = strtoprice(price);
 
   return newStock;
 

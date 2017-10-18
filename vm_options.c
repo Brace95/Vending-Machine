@@ -55,14 +55,14 @@ Boolean loadStock(VmSystem * system, const char * fileName)
     FILE * fp;
     Node * newNode;
     Stock * newStock;
-    char buff[MAX_LEN];
+    char buff[STOCK_MAX_LINE];
 
     system->stockFileName = fileName;
 
     /* Open file */
     fp = fopen(fileName, "r");
 
-    while(fgets(buff, MAX_LEN, fp))
+    while(fgets(buff, STOCK_MAX_LINE, fp))
     {
       /* Remove extra chars */
       buff[strlen(buff)-1] = '\0';
@@ -124,7 +124,8 @@ void displayItems(VmSystem * system)
   {
     data = curr->data;
     printf("%-6s| %-40s| %-10u| $%3u.%02u\n",
-            data->id, data->name, data->onHand, 1, 1);
+            data->id, data->name, data->onHand,
+            data->price.dollars, data->price.cents);
     curr = curr->next;
   }
 

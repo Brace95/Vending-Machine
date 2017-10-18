@@ -10,4 +10,8 @@
 
 #define COIN_DELIM ","
 
+#define PRICE_DELIM "."
+
+Price strtoprice (char * str);
+
 #endif

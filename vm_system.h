@@ -29,7 +29,7 @@
  **/
 #define NUM_DENOMS 8
 
-#define MAX_LEN ID_LEN+NAME_LEN+DESC_LEN+PRICE_LEN+QUA_LEN+SEP_COUNT
+#define STOCK_MAX_LINE ID_LEN+NAME_LEN+DESC_LEN+PRICE_LEN+QUA_LEN+SEP_COUNT
 
 /**
  * A structure to represent a price. One of the problems with the floating
