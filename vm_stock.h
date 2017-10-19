@@ -21,5 +21,7 @@ void removeNode(List * list, int index);
 
 Stock * createStock(char * stockString);
 void freeStock(Stock * stock);
+Stock * searchStock(List * list, char * id);
+Stock * getStock(VmSystem * system);
 
 #endif

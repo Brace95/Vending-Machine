@@ -7,6 +7,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <assert.h>
+#include <regex.h>
 
 typedef enum boolean
 {

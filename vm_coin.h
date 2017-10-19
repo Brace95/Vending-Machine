@@ -8,9 +8,17 @@
  **/
 #define DEFAULT_COIN_COUNT 20
 
+#define INT_PRICE_LEN 4
+
 #define COIN_DELIM ","
 
 #define PRICE_DELIM "."
+
+void processPayment(VmSystem * system, Stock * item);
+void processChange(VmSystem * system, int due);
+
+Boolean denocmpint (int value);
+int denotoint(Denomination dom);
 
 Price strtoprice (char * str);
 
