@@ -161,10 +161,10 @@ Boolean loadData(
     printf("Purchase Item\n");
     printf("----------------\n");
 
-    stock = getStock(system);
+    stock = purchaseInteraction(system);
 
     if(!stock)
-    return;
+      return;
 
     printf("You have selected %s, %s. that will be %u.%02u\n",
     stock->name, stock->desc, stock->price.dollars, stock->price.cents);
@@ -173,7 +173,9 @@ Boolean loadData(
     printf("- type in the value of each note/coin in cents.\n");
     printf("Press enter on a new and empty line to cancel purchase:\n");
 
-    processPayment(system, stock);
+    if(processPayment(system, stock))
+      stock->onHand--;
+      
     printf("Please come back soon.\n");
 
 
@@ -238,7 +240,7 @@ Boolean loadData(
   void resetStock(VmSystem * system)
   {
     printf("\nResetting Stock Counts...\n");
-    resetStock(system);
+    defaultStock(system->itemList);
     printf("Done!\n");
   }
 

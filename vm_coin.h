@@ -12,14 +12,17 @@
 #define COIN_DELIM ","
 #define PRICE_DELIM "."
 
-void processPayment(VmSystem * system, Stock * item);
-void processChange(VmSystem * system, int due);
+Boolean processPayment(VmSystem * system, Stock * item);
+Boolean processChange(VmSystem * system, int due);
 
 Boolean denocmpint (int value);
 int denotoint(Denomination dom);
 Denomination inttodeno(int value);
+Boolean isCoin(int value);
 
 void parseCoinLine(VmSystem * system, char * line);
 Price strtoprice (char * str);
+void initCoin(Coin * coin);
+void addCoins(VmSystem * system, Coin * given);
 
 #endif

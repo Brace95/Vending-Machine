@@ -131,14 +131,14 @@ Stock * searchStock(List * list, char * id)
   while(curr != NULL)
   {
     if(strcmp(curr->data->id, id) == 0)
-    return curr->data;
+      return curr->data;
     curr = curr->next;
   }
 
   return NULL;
 }
 
-Stock * getStock(VmSystem * system)
+Stock * purchaseInteraction(VmSystem * system)
 {
 
   char inputId[ID_LEN + EXTRA_SPACES];
@@ -205,4 +205,15 @@ Stock * getStock(VmSystem * system)
 
   return stock;
 
+}
+
+void defaultStock(List * list)
+{
+  Node * curr;
+  curr = list->head;
+  while(curr)
+  {
+    curr->data->onHand = DEFAULT_STOCK_LEVEL;
+    curr = curr->next;
+  }
 }

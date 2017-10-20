@@ -11,7 +11,7 @@
 * convert Denomination to coin value, deducting coins from register, etc...
 */
 
-void processPayment(VmSystem * system, Stock * item)
+Boolean processPayment(VmSystem * system, Stock * item)
 {
   int start;
   int owing;
@@ -20,8 +20,9 @@ void processPayment(VmSystem * system, Stock * item)
   char amountInput[INT_PRICE_LEN + EXTRA_SPACES];
   regex_t reg;
   int status;
+  Coin given[NUM_DENOMS];
 
-
+  initCoin(given);
   start = item->price.dollars * 100 + item->price.cents;
   owing = start;
 
@@ -50,8 +51,11 @@ void processPayment(VmSystem * system, Stock * item)
       else
       {
         value = (int)atoi(amountInput);
-        if((value))
-        owing -= value;
+        if(value && isCoin(value))
+        {
+          owing -= value;
+          given[inttodeno(value)].count++;
+        }
         else
         printf("Invalid Denomination\n");
       }
@@ -59,6 +63,8 @@ void processPayment(VmSystem * system, Stock * item)
     }
 
   }
+
+  addCoins(system, given);
 
   if(owing < 0)
   {
@@ -69,31 +75,53 @@ void processPayment(VmSystem * system, Stock * item)
   {
     printf("Refunding:\n");
     processChange(system, start-owing);
+    return FALSE;
   }
   else
   printf("Thank you, here is you %s\n", item->name);
+
+  return TRUE;
 }
 
-void processChange(VmSystem * system, int due)
+Boolean processChange(VmSystem * system, int due)
 {
-
   Denomination coin;
   int value;
+  Coin given[NUM_DENOMS];
 
-  for(coin = TEN_DOLLARS; coin >= FIVE_CENTS; coin--)
+  initCoin(given);
+  coin = TEN_DOLLARS;
+
+  while(due != 0)
   {
     value = denotoint(coin);
-    if(due - value >= 0)
+    if(due - value >= 0 && system->cashRegister[coin].count != 0)
     {
       due -= value;
+      given[coin].count++;
       coin++;
-      printf("\t%0.02f\n", value / 100.0);
+    }
+    else
+    {
+      if(coin == FIVE_CENTS && system->cashRegister[coin].count == 0)
+      return FALSE;
+      else
+      coin--;
     }
 
-    if(coin == FIVE_CENTS)
-    break;
   }
 
+  coin = TEN_DOLLARS;
+  for(coin = FIVE_CENTS; coin <= TEN_DOLLARS; coin++)
+  {
+    if(given[coin].count != 0)
+    {
+      printf("\t%0.02f\n", denotoint(coin) / 100.0);
+      given[coin].count--;
+      coin--;
+    }
+  }
+  return TRUE;
 }
 
 Boolean denocmpint (int value)
@@ -155,8 +183,28 @@ Denomination inttodeno(int value)
     return TWO_DOLLARS;
     case 500:
     return FIVE_DOLLARS;
-    default:
+    case 1000:
     return TEN_DOLLARS;
+    default:
+    return NUM_DENOMS;
+  }
+}
+
+Boolean isCoin(int value)
+{
+  switch(value)
+  {
+    case 5:
+    case 10:
+    case 20:
+    case 50:
+    case 100:
+    case 200:
+    case 500:
+    case 1000:
+    return TRUE;
+    default:
+    return FALSE;
   }
 }
 
@@ -178,7 +226,32 @@ void parseCoinLine(VmSystem * system, char * line)
 {
   Denomination deno;
   deno = inttodeno(atoi(strtok(line, COIN_DELIM)));
+  if((int)deno == NUM_DENOMS)
+  {
+    fprintf(stderr, "Error in Coin file\n");
+    exit(1);
+  }
   system->cashRegister[deno].denom = deno;
   system->cashRegister[deno].count = atoi(strtok(NULL, COIN_DELIM));
 
+}
+
+void initCoin(Coin * coin)
+{
+  Denomination deno;
+  for(deno = FIVE_CENTS; deno <= TEN_DOLLARS; deno++)
+  {
+    coin[deno].denom = deno;
+    coin[deno].count = 0;
+  }
+}
+
+void addCoins(VmSystem * system, Coin * given)
+{
+  Denomination coin;
+  for(coin = FIVE_CENTS; coin <= TEN_DOLLARS; coin++)
+  {
+    printf("deno: %i, reg count: %i, given count: %i\n", coin, system->cashRegister[coin].count, given[coin].count);
+    system->cashRegister[coin].count += given[coin].count;
+  }
 }
