@@ -103,6 +103,9 @@ Boolean loadData(
 
     while(fgets(buff, COIN_MAX_LINE, fp))
     {
+      if(buff[0] == '\n')
+        continue;
+
       /* Remove extra chars */
       buff[strlen(buff)-1] = '\0';
 
