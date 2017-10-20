@@ -17,12 +17,12 @@ void freeList(VmSystem * system);
 Node * createNode(Stock * data);
 void freeNode(Node * node);
 void insertNode(List * list, Node * new);
-void removeNode(List * list, int index);
 
 Stock * createStock(char * stockString);
+void removeStock(List * list, Stock * stock);
 void freeStock(Stock * stock);
 Stock * searchStock(List * list, char * id);
-Stock * purchaseInteraction(VmSystem * system);
+Stock * stockInteraction(VmSystem * system);
 void defaultStock(List * list);
 
 #endif

@@ -62,19 +62,26 @@ Boolean loadData(
     /* Open file */
     fp = fopen(fileName, "r");
 
+    if(fp == NULL)
+      return FALSE;
+
     while(fgets(buff, STOCK_MAX_LINE, fp))
     {
       /* Remove extra chars */
       buff[strlen(buff)-1] = '\0';
 
       if(!checkLineStock(buff))
-      return FALSE;
+      {
+        fclose(fp);
+        return FALSE;
+      }
 
       newStock = createStock(buff);
       newNode = createNode(newStock);
       insertNode(system->itemList, newNode);
 
     }
+    fclose(fp);
     return TRUE;
   }
 
@@ -91,17 +98,25 @@ Boolean loadData(
     /* Open file */
     fp = fopen(fileName, "r");
 
+    if(fp == NULL)
+      return FALSE;
+
     while(fgets(buff, COIN_MAX_LINE, fp))
     {
       /* Remove extra chars */
       buff[strlen(buff)-1] = '\0';
 
       if(!checkLineCoin(buff))
-      return FALSE;
+      {
+        fclose(fp);
+        return FALSE;
+      }
 
       parseCoinLine(system, buff);
 
     }
+
+    fclose(fp);
     return TRUE;
   }
 
@@ -110,7 +125,27 @@ Boolean loadData(
   **/
   Boolean saveStock(VmSystem * system)
   {
-    return FALSE;
+    FILE * fp;
+    Node * curr;
+    Stock * stock;
+
+    fp = fopen(system->stockFileName, "w");
+
+    if(fp == NULL)
+      return FALSE;
+
+    curr = system->itemList->head;
+    while(curr != NULL)
+    {
+      stock = curr->data;
+      fprintf(fp, "%s|%s|%s|%u.%02u|%u\n",
+      stock->id, stock->name, stock->desc,
+      stock->price.dollars, stock->price.cents, stock->onHand);
+      curr = curr->next;
+    }
+
+    fclose(fp);
+    return TRUE;
   }
 
   /**
@@ -118,7 +153,19 @@ Boolean loadData(
   **/
   Boolean saveCoins(VmSystem * system)
   {
-    return FALSE;
+    FILE * fp;
+    Denomination deno;
+
+    fp = fopen(system->coinFileName, "w");
+
+    if(fp == NULL)
+      return FALSE;
+
+    for(deno = FIVE_CENTS; deno <= TEN_DOLLARS; deno++)
+      fprintf(fp, "%i,%i\n", denotoint(deno), system->cashRegister[deno].count);
+
+    fclose(fp);
+    return TRUE;
   }
 
   /**
@@ -158,10 +205,10 @@ Boolean loadData(
 
     Stock * stock;
 
-    printf("Purchase Item\n");
+    printf("\nPurchase Item\n");
     printf("----------------\n");
 
-    stock = purchaseInteraction(system);
+    stock = stockInteraction(system);
 
     if(!stock)
       return;
@@ -187,7 +234,28 @@ Boolean loadData(
   * This function implements requirement 6 of the assignment specification.
   **/
   void saveAndExit(VmSystem * system)
-  { }
+  {
+    printf("\nSaving and Exiting\n");
+    printf("----------------\n");
+
+    printf("\t Saving Stock...\n");
+    if(saveStock(system))
+      printf("\tDone!\n");
+    else
+      printf("\tError Could not save!\n");
+
+    printf("\t Saving Coins...\n");
+    if(saveCoins(system))
+      printf("\tDone!\n");
+    else
+      printf("\tError Could not save!\n");
+
+    printf("Freeing memory..\n");
+    systemFree(system);
+
+    printf("\nAll done, Goodbye!\n");
+
+  }
 
   /**
   * This option adds an item to the system. This function implements
@@ -201,7 +269,20 @@ Boolean loadData(
   * This function implements requirement 8 of the assignment specification.
   **/
   void removeItem(VmSystem * system)
-  { }
+  {
+
+    Stock * stock;
+
+    printf("\nDelete Item\n");
+    printf("----------------\n");
+
+    stock = stockInteraction(system);
+
+    printf("Removing item with id %s...", stock->id);
+    removeStock(system->itemList, stock);
+    printf("Deleted!\n");
+
+  }
 
   /**
   * This option will require you to display the coins from lowest to highest
@@ -263,4 +344,7 @@ Boolean loadData(
   * This function implements requirement 10 of the assignment specification.
   **/
   void abortProgram(VmSystem * system)
-  { }
+  {
+    printf("\nABORTING!\n");
+    freeList(system);
+  }

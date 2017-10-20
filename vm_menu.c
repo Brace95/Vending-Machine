@@ -20,7 +20,7 @@ void initMenu(MenuItem * menu)
   menu[1].function = &purchaseItem;
 
   strcpy(menu[2].text, "Save and Exit");
-  menu[2].function = &displayItems;
+  menu[2].function = &saveAndExit;
 
   strcpy(menu[3].text, "Add Item");
   menu[3].function = &addItem;

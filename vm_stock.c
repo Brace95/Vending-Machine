@@ -40,6 +40,8 @@ void freeList(VmSystem * system)
 
   free(system->itemList);
 
+  system->itemList = NULL;
+
 }
 
 
@@ -61,38 +63,6 @@ void insertNode(List * list, Node * new)
   new->next = list->head;
   list->head = new;
   list->size++;
-}
-
-void removeNode(List * list, int index)
-{
-
-  Node * prev;
-  Node * curr;
-  Node * next;
-
-  curr = list->head;
-  next = curr->next;
-
-  if(index == 0)
-  {
-    list->head = next;
-    freeNode(curr);
-  }
-  else
-  {
-    int i;
-    i = 0;
-    while(i != index)
-    {
-      prev = curr;
-      curr = next;
-      next = curr->next;
-    }
-
-    prev->next = next;
-    freeNode(curr);
-  }
-
 }
 
 Stock * createStock(char * stockString)
@@ -117,6 +87,36 @@ Stock * createStock(char * stockString)
 
 }
 
+void removeStock(List * list, Stock * stock)
+{
+
+  Node * prev;
+  Node * curr;
+  Node * next;
+
+  curr = list->head;
+  next = curr->next;
+
+  if(stock->id == curr->data->id)
+  {
+    list->head = next;
+    freeNode(curr);
+  }
+  else
+  {
+    while(curr->data->id != stock->id)
+    {
+      prev = curr;
+      curr = next;
+      next = curr->next;
+    }
+
+    prev->next = next;
+    freeNode(curr);
+  }
+
+}
+
 void freeStock(Stock * stock)
 {
   free(stock);
@@ -138,9 +138,8 @@ Stock * searchStock(List * list, char * id)
   return NULL;
 }
 
-Stock * purchaseInteraction(VmSystem * system)
+Stock * stockInteraction(VmSystem * system)
 {
-
   char inputId[ID_LEN + EXTRA_SPACES];
 
   regex_t reg;
@@ -157,7 +156,7 @@ Stock * purchaseInteraction(VmSystem * system)
     valid = TRUE;
 
     /* Get user input */
-    printf("Please enter the id of the item you wish to purchase:");
+    printf("Please enter the id of the item:");
     fgets(inputId, ID_LEN + EXTRA_SPACES, stdin);
 
     /* Leave if null */
@@ -196,15 +195,11 @@ Stock * purchaseInteraction(VmSystem * system)
           valid = FALSE;
         }
       }
-
       regfree(&reg);
-
     }
 
   }
-
   return stock;
-
 }
 
 void defaultStock(List * list)
