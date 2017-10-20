@@ -32,5 +32,6 @@ typedef enum boolean
 void readRestOfLine();
 
 Boolean checkLineStock(char * line);
+Boolean checkLineCoin(char * line);
 
 #endif

@@ -50,7 +50,7 @@ void processPayment(VmSystem * system, Stock * item)
       else
       {
         value = (int)atoi(amountInput);
-        if(denocmpint(value))
+        if((value))
         owing -= value;
         else
         printf("Invalid Denomination\n");
@@ -114,7 +114,8 @@ Boolean denocmpint (int value)
 
 int denotoint(Denomination dom)
 {
-  switch (dom) {
+  switch(dom)
+  {
     case FIVE_CENTS:
     return 5;
     case TEN_CENTS:
@@ -132,7 +133,30 @@ int denotoint(Denomination dom)
     case TEN_DOLLARS:
     return 1000;
     default:
-    return 0;
+    return -1;
+  }
+}
+
+Denomination inttodeno(int value)
+{
+  switch(value)
+  {
+    case 5:
+    return FIVE_CENTS;
+    case 10:
+    return TEN_CENTS;
+    case 20:
+    return TWENTY_CENTS;
+    case 50:
+    return FIFTY_CENTS;
+    case 100:
+    return ONE_DOLLAR;
+    case 200:
+    return TWO_DOLLARS;
+    case 500:
+    return FIVE_DOLLARS;
+    default:
+    return TEN_DOLLARS;
   }
 }
 
@@ -148,4 +172,13 @@ Price strtoprice (char * str)
   new.cents = atoi(tok);
 
   return new;
+}
+
+void parseCoinLine(VmSystem * system, char * line)
+{
+  Denomination deno;
+  deno = inttodeno(atoi(strtok(line, COIN_DELIM)));
+  system->cashRegister[deno].denom = deno;
+  system->cashRegister[deno].count = atoi(strtok(NULL, COIN_DELIM));
+
 }

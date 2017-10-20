@@ -31,6 +31,8 @@
 
 #define STOCK_MAX_LINE ID_LEN+NAME_LEN+DESC_LEN+PRICE_LEN+QUA_LEN+SEP_COUNT
 
+#define COIN_MAX_LINE 6 + EXTRA_SPACES
+
 /**
  * A structure to represent a price. One of the problems with the floating
  * point formats in C like float and double is that they have minor issues

@@ -44,3 +44,8 @@ Boolean checkLineStock(char * line)
 
   return TRUE;
 }
+
+Boolean checkLineCoin(char * line)
+{
+  return TRUE;
+}

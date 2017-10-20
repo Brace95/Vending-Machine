@@ -83,7 +83,25 @@ Boolean loadData(
   **/
   Boolean loadCoins(VmSystem * system, const char * fileName)
   {
+    FILE * fp;
+    char buff[COIN_MAX_LINE];
+
     system->coinFileName = fileName;
+
+    /* Open file */
+    fp = fopen(fileName, "r");
+
+    while(fgets(buff, COIN_MAX_LINE, fp))
+    {
+      /* Remove extra chars */
+      buff[strlen(buff)-1] = '\0';
+
+      if(!checkLineCoin(buff))
+      return FALSE;
+
+      parseCoinLine(system, buff);
+
+    }
     return TRUE;
   }
 
@@ -190,7 +208,26 @@ Boolean loadData(
   * specifications.
   **/
   void displayCoins(VmSystem * system)
-  { }
+  {
+    Denomination deno;
+    int i;
+
+    printf("\nDenomination | Count\n");
+    for(i = 0; i < 20; i++)
+      printf("-");
+    printf("\n");
+
+    for(deno = FIVE_CENTS; deno <= TEN_DOLLARS; deno++)
+    {
+      if(deno >= FIVE_CENTS && deno < ONE_DOLLAR)
+        printf("%2i %-9s | %i\n",
+        denotoint(deno), "Cents", system->cashRegister[deno].count);
+      else
+      printf("%2i %-9s | %i\n",
+      denotoint(deno)/100, "Dollars", system->cashRegister[deno].count);
+    }
+
+  }
 
   /**
   * This option will require you to iterate over every stock in the
@@ -199,7 +236,11 @@ Boolean loadData(
   * This function implements requirement 9 of the assignment specification.
   **/
   void resetStock(VmSystem * system)
-  { }
+  {
+    printf("\nResetting Stock Counts...\n");
+    resetStock(system);
+    printf("Done!\n");
+  }
 
   /**
   * This option will require you to iterate over every coin in the coin
