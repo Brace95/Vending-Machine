@@ -246,6 +246,13 @@ void initCoin(Coin * coin)
   }
 }
 
+void defaultCoin(VmSystem * system)
+{
+  Denomination deno;
+  for(deno = FIVE_CENTS; deno <= TEN_DOLLARS; deno++)
+  system->cashRegister[deno].count = DEFAULT_COIN_COUNT;
+}
+
 void addCoins(VmSystem * system, Coin * given)
 {
   Denomination coin;

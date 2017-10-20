@@ -175,7 +175,7 @@ Boolean loadData(
 
     if(processPayment(system, stock))
       stock->onHand--;
-      
+
     printf("Please come back soon.\n");
 
 
@@ -252,7 +252,11 @@ Boolean loadData(
   * assignment specifications.
   **/
   void resetCoins(VmSystem * system)
-  { }
+  {
+    printf("\nResetting Coin Counts...\n");
+    defaultCoin(system);
+    printf("Done!\n");
+  }
 
   /**
   * This option will require you to display goodbye and free the system.

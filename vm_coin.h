@@ -23,6 +23,7 @@ Boolean isCoin(int value);
 void parseCoinLine(VmSystem * system, char * line);
 Price strtoprice (char * str);
 void initCoin(Coin * coin);
+void defaultCoin(VmSystem * system);
 void addCoins(VmSystem * system, Coin * given);
 
 #endif
