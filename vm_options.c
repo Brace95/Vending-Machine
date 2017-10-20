@@ -68,6 +68,9 @@ Boolean loadData(
     while(fgets(buff, STOCK_MAX_LINE, fp))
     {
       /* Remove extra chars */
+      if(buff[0] == '\n')
+        continue;
+        
       buff[strlen(buff)-1] = '\0';
 
       if(!checkLineStock(buff))
